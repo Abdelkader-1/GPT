@@ -21,7 +21,7 @@ if __name__ == '__main__':
     models = model.models()
     
     #x = model.models(df_dict,table_schema,"what is the total sales per business line")
-    text = "what is the total sales per business line"
+    text = "what is the top 5 products and there amount"
 
     result = models.executeSQLquery(df_dict,text,table_schema ,engine,5)
     ansuwer = models.get_result_prompt(text, df_dict, table_schema, result)
