@@ -1,5 +1,5 @@
 import os
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 from langchain.llms import openai
 from langchain_community.llms import AzureOpenAI
 from langchain.agents import create_sql_agent,create_openai_functions_agent,create_openapi_agent
@@ -8,6 +8,7 @@ from langchain.agents.agent_types import AgentType
 import Db_authentication
 import modelConnection
 import model
+import keyboard
 import auth_ser
 if __name__ == '__main__':
     #connect to the model
@@ -20,10 +21,18 @@ if __name__ == '__main__':
 
     models = model.models()
     
-    #x = model.models(df_dict,table_schema,"what is the total sales per business line")
-    text = "what is the top 5 products and there amount"
+    while True:
+        # x = model.models(df_dict, table_schema, "what is the total sales per business line")
+        text = input("Enter your question: ")
 
-    result = models.executeSQLquery(df_dict,text,table_schema ,engine,5)
-    ansuwer = models.get_result_prompt(text, df_dict, table_schema, result)
-    #out = model.langChain_sqlModel()
-    print(ansuwer)
+        #text = "what is the top 5 products and their amount"
+
+        result = models.executeSQLquery(df_dict, text, table_schema, engine, 5)
+        ansuwer = models.get_result_prompt(text, df_dict, table_schema, result)
+        # out = model.langChain_sqlModel()
+        print(ansuwer)
+
+        # Check if 'esc' key is pressed to exit the loop
+        if keyboard.is_pressed('esc'):
+            print("Exiting the loop.")
+            break
