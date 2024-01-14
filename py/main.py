@@ -11,15 +11,13 @@ import model
 import auth_ser
 if __name__ == '__main__':
     #connect to the model
-    #conn = modelConnection.conn()
-    #conn.set_openai_environment_variables()
+    conn = modelConnection.conn()
+    conn.set_openai_environment_variables()
     #connect to the database
-    #auth = Db_authentication.Auth()
-    #auth.read_credentials()
-    #df_dict,table_schema,engine = auth.schema_describtion()
-    #df_dict=auth_ser.df_dict
-    #table_schema=auth_ser.table_schema
-    #engine=auth_ser.engine
+    auth = Db_authentication.Auth()
+    auth.read_credentials()
+    df_dict,table_schema,engine = auth.schema_describtion()
+
     models = model.models()
     
     #x = model.models(df_dict,table_schema,"what is the total sales per business line")
