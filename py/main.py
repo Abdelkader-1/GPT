@@ -11,12 +11,20 @@ import model
 if __name__ == '__main__':
     #connect to the model
     conn = modelConnection.conn()
-    conn.set_environment_variables()
+    conn.set_openai_environment_variables()
     #connect to the database
     auth = Db_authentication.Auth()
     auth.read_credentials()
-    df_dict,table_schema = auth.schema_describtion()
+    df_dict,table_schema,engine = auth.schema_describtion()
+    #df_dict=auth.df_dict
+    #table_schema=auth.table_schema
+    #engine=auth.engine
+    models = model.models()
+    
+    #x = model.models(df_dict,table_schema,"what is the total sales per business line")
+    text = "what is the total sales per business line"
 
-    model = model.models(df_dict,table_schema,"what is the total sales per business line")
-    out = model.langChain_sqlModel()
-    print(out)
+    result = models.executeSQLquery(df_dict,text,table_schema ,engine,5)
+    ansuwer = models.get_result_prompt(text, df_dict, table_schema, result)
+    #out = model.langChain_sqlModel()
+    print(ansuwer)
