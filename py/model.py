@@ -6,6 +6,7 @@ from langchain.agents.agent_toolkits import SQLDatabaseToolkit
 from langchain.agents import create_sql_agent
 import prompts
 import pandas as pd
+import history
 
 class models:
     def __init__(self):
@@ -39,43 +40,32 @@ class models:
 
 
     query = None
-    def generate_sql_query(self,dictionary, table_schema, text):
-        prompt = """**Task:** Generate a concise SQL Server query using only function calls and parentheses.
-
-        **Context:**
-        - Available tables, columns, and data types: {}
-        - Table schemas: {}
-
-        **Requirements:**
-        - **Translate natural language input:** Accurately convert the given text into a corresponding SQL query.
-        - **Concise language:** Use only function calls and parentheses, omitting descriptive words.
-        - **Example:** Replace "DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY)" with "DATE_SUB(CURRENT_DATE(), 1)".
-        - **Handle joins:** Identify and join necessary tables as required by the input text.
-            Input: {} SQL Query (without descriptive words).
-        """.format(dictionary, table_schema, text)
-        
+    def generate_sql_query(self,dictionary, table_schema, text,sqlmessages):
+               
         request = openai.ChatCompletion.create(
             engine="gpt-35-turbo",
-            messages=[
-                {"role": "user", "content": prompt},
-            ],
+            messages=sqlmessages,
             stop=None,
-
         )
         global query
         query = request.choices[0].message.content
+        print("from generate sql query")
+        print(sqlmessages)
         return query
 
 
 
-    def executeSQLquery(self,df_dict,text,table_schema,engine,max_retries):
+    def executeSQLquery(self,df_dict,text,table_schema,engine,max_retries,sqlmessages):
         retry_count = 0
         
         while retry_count < max_retries:
             try:
-                query = self.generate_sql_query(df_dict,text,table_schema)
+                query = self.generate_sql_query(df_dict,text,table_schema,sqlmessages)
                 result = pd.read_sql(query,engine)
-                return result
+                print("!!!!!!!!from executeSQLquery !!!!!!!")
+                print(query)
+                print(result)
+                return result,query
             except Exception as e:
                 print(f"Error executing query: {e}")
                 retry_count += 1
@@ -86,32 +76,11 @@ class models:
                     raise
         
 
-    def get_result_prompt(self,question, df_dict, table_schema, queryResult):
-
-        prompt = """**Task:** Answer the input question in natural language based on the provided data.
-
-        **Context:**
-        - Table schemas: {}
-        - Input SQL query (with potential joins): {}
-        - Query result: {}
-        - Input question: {}
-
-        **Requirements:**
-        - Generate a human-readable response that directly answers the question.
-        - Avoid mentioning any SQL queries or table names in the response.
-        - Handle empty results with "No data found."
-        - Gracefully handle errors with "Try it in another way."
-
-        **Example:**
-        What were the total sales in January 2023?
-        **Response:** The total sales in January 2023 were 123 million dollars.
-        """.format(table_schema, query, queryResult, question)
+    def get_result_prompt(self,question, df_dict, table_schema, queryResult,massages):
         
         request = openai.ChatCompletion.create(
                 engine="gpt-35-turbo",
-                messages=[
-                    {"role": "user", "content": prompt},
-                ],
+                messages=massages,
                 stop=None,
                 temperature=0.7,
                 max_tokens=800,
@@ -120,7 +89,10 @@ class models:
                 presence_penalty=0,
             )
         answer = request.choices[0].message.content
-        answer
+        print("!!!!!!!!from get_result_prompt !!!!!!!")
+        print(massages)
+
+        print(answer)
         return answer
         
     

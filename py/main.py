@@ -9,6 +9,7 @@ import Db_authentication
 import modelConnection
 import model
 import keyboard
+import history
 import auth_ser
 if __name__ == '__main__':
     #connect to the model
@@ -20,18 +21,25 @@ if __name__ == '__main__':
     df_dict,table_schema,engine = auth.schema_describtion()
 
     models = model.models()
+    history=history.history()
     
     while True:
         # x = model.models(df_dict, table_schema, "what is the total sales per business line")
+        massages=history.massages
+        sqlmessages=history.sqlmessages
         text = input("Enter your question: ")
-
+        user_prompt=f"{text}"
+        history.add_messages("user", user_prompt)
+        history.add_messagesql("user", user_prompt)
+        #history.process_user_querysql(text)
         #text = "what is the top 5 products and their amount"
-
-        result = models.executeSQLquery(df_dict, text, table_schema, engine, 5)
-        ansuwer = models.get_result_prompt(text, df_dict, table_schema, result)
+       
+        result,query = models.executeSQLquery(df_dict, text, table_schema, engine, 5,sqlmessages)
+        history.add_messagesql("assistant", f"{query}")
+        history.add_messages("user", f"{result}")
+        answer = models.get_result_prompt(text, df_dict, table_schema, result,massages)
+        history.add_messages("assistant", f"{answer}")
         # out = model.langChain_sqlModel()
-        print(ansuwer)
-
         # Check if 'esc' key is pressed to exit the loop
         if keyboard.is_pressed('esc'):
             print("Exiting the loop.")

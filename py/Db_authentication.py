@@ -3,8 +3,8 @@ import pandas as pd
 from langchain.sql_database import SQLDatabase
 class Auth:
     def __init__(self):
-        self.email = None
-        self.password = None
+        #self.email = None
+        #self.password = None
         self.server = 'anmx3c2yurjethctgyba6xtuaq-vkvbn7t4322edeguc3ufhjtjeu.datawarehouse.pbidedicated.windows.net'
         self.database = 'likeCard'
         self.driver = 'ODBC Driver 18 for SQL Server'
