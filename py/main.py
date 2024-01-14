@@ -11,11 +11,12 @@ import model
 if __name__ == '__main__':
     #connect to the model
     conn = modelConnection.conn()
+    conn.set_environment_variables()
     #connect to the database
     auth = Db_authentication.Auth()
     auth.read_credentials()
-    db = auth.connect_to_database()
+    df_dict,table_schema = auth.schema_describtion()
 
-    model = model.models(db,"what is the total sales per business line")
-    out = model.sqlModel()
+    model = model.models(df_dict,table_schema,"what is the total sales per business line")
+    out = model.langChain_sqlModel()
     print(out)
