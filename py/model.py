@@ -121,3 +121,4 @@ def get_result_prompt(question, query, df_dict, table_schema, queryResult):
     answer
     return answer
         
+    
