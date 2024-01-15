@@ -82,7 +82,7 @@ class models:
                 engine="gpt-35-turbo",
                 messages=massages,
                 stop=None,
-                temperature=0.7,
+                temperature=0,
                 max_tokens=800,
                 top_p=0.95,
                 frequency_penalty=0,
@@ -95,4 +95,32 @@ class models:
         print(answer)
         return answer
         
+    def graph(self,question,query,df_dict,table_schema,queryResult):
+
+        prompt = """Task: Generate graph using pandas and plotly.
+                    Context
+                    Table schema {}
+                    Input SQL query {}
+                    Query result {}
+                    Input question {}
+                    Requirements
+                    Handle empty results with "No data found."
+                    Handle errors with "Try it another way." Example:
+                    import pandas as pd
+                    import plotly 
+                    # ... (code to generate graph based on context)
+                    """.format(table_schema, query, queryResult, question)
+
+
+        request = openai.ChatCompletion.create(
+            engine="gpt-35-turbo",
+            messages=[
+                {"role": "user", "content": prompt},
+            ],
+                    stop=None,
+        
+        )
+        python_code = request.choices[0].message.content
+        final_graph= exec(python_code)
+        return final_graph
     

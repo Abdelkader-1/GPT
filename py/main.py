@@ -10,7 +10,6 @@ import modelConnection
 import model
 import keyboard
 import history
-import auth_ser
 if __name__ == '__main__':
     #connect to the model
     conn = modelConnection.conn()
@@ -36,11 +35,14 @@ if __name__ == '__main__':
        
         result,query = models.executeSQLquery(df_dict, text, table_schema, engine, 5,sqlmessages)
         history.add_messagesql("assistant", f"{query}")
+        print(query)
+        print(result)
         history.add_messages("user", f"{result}")
         answer = models.get_result_prompt(text, df_dict, table_schema, result,massages)
+        out_graph = models.graph(text,query,df_dict,table_schema,result)
         history.add_messages("assistant", f"{answer}")
         # out = model.langChain_sqlModel()
         # Check if 'esc' key is pressed to exit the loop
-        if keyboard.is_pressed('esc'):
+        if keyboard.is_pressed('Esc'):
             print("Exiting the loop.")
             break
