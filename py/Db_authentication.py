@@ -1,6 +1,8 @@
 import sqlalchemy as sa
 import pandas as pd
 from langchain.sql_database import SQLDatabase
+import pyodbc
+
 class Auth:
     def __init__(self):
         #self.email = None

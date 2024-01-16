@@ -51,8 +51,10 @@ class models:
         query = request.choices[0].message.content
         print("from generate sql query")
         print(sqlmessages)
-        return query
-
+        total_tokens = request.usage.total_tokens
+        prompt_tokens = request.usage.prompt_tokens
+        completion_tokens = request.usage.completion_tokens
+        return query,total_tokens,prompt_tokens,completion_tokens
 
 
     def executeSQLquery(self,df_dict,text,table_schema,engine,max_retries,sqlmessages):
@@ -60,12 +62,12 @@ class models:
         
         while retry_count < max_retries:
             try:
-                query = self.generate_sql_query(df_dict,text,table_schema,sqlmessages)
+                query,total_tokens,prompt_tokens,completion_tokens = self.generate_sql_query(df_dict,text,table_schema,sqlmessages)
                 result = pd.read_sql(query,engine)
                 print("!!!!!!!!from executeSQLquery !!!!!!!")
                 print(query)
                 print(result)
-                return result,query
+                return result,query,total_tokens,prompt_tokens,completion_tokens
             except Exception as e:
                 print(f"Error executing query: {e}")
                 retry_count += 1
@@ -82,18 +84,23 @@ class models:
                 engine="gpt-35-turbo",
                 messages=massages,
                 stop=None,
-                temperature=0,
+                temperature=0.7,
                 max_tokens=800,
                 top_p=0.95,
                 frequency_penalty=0,
                 presence_penalty=0,
             )
         answer = request.choices[0].message.content
+        total_tokens = request.usage.total_tokens
+        prompt_tokens = request.usage.prompt_tokens
+        completion_tokens = request.usage.completion_tokens
         print("!!!!!!!!from get_result_prompt !!!!!!!")
         print(massages)
 
         print(answer)
-        return answer
+        return answer,total_tokens,prompt_tokens,completion_tokens
+    
+    
     def Business_advisor(self,answer,table_schema,question):
         prompt = """
                  You are a business consultant
