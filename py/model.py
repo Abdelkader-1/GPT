@@ -124,7 +124,7 @@ class models:
         
     def graph(self,question,query,df_dict,table_schema,queryResult):
 
-        prompt = """Task: Generate graph using pandas and plotly.
+        prompt = """Task: Generate data frame only.
                     Context
                     Table schema {}
                     Input SQL query {}
@@ -133,10 +133,16 @@ class models:
                     Requirements
                     Handle empty results with "No data found."
                     Handle errors with "Try it another way." Example:
-                    just write the code without description
-                    import pandas as pd
-                    import plotly 
-                    # ... (code to generate graph based on context)
+                    just code with no descriptions
+                    store the data frame in variable called result                    
+                    example
+                    import graphviz as graphviz
+                    graph = graphviz.Digraph()
+                    graph.edge('1','2')
+                    graph.edge('1','3')
+                    graph.edge('3','4')
+                    graph.edge('3','5')
+                    graph.edge('5','6')
                     """.format(table_schema, query, queryResult, question)
 
 
@@ -148,7 +154,10 @@ class models:
                     stop=None,
         
         )
+        
         python_code = request.choices[0].message.content
-        final_graph= exec(python_code)
-        return final_graph
+        print("python_code: ",python_code)
+        result = exec(python_code)
+        print("result: ",result)
+        return result
     

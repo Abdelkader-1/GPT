@@ -7,6 +7,8 @@ import Db_authentication
 import model
 import history
 import pyodbc
+import plotly.graph_objects as go  
+import graphviz as graphviz
 
 
 os.environ['OPENAI_API_BASE'] = 'https://like-card-test.openai.azure.com/'
@@ -35,6 +37,8 @@ if 'generated' not in st.session_state:
 if 'generatedadv' not in st.session_state:
     st.session_state['generatedadv'] = []
 
+if 'generatedGraph' not in st.session_state:
+    st.session_state['generatedGraph'] = []
 
 if 'past' not in st.session_state:
     st.session_state['past'] = []
@@ -68,6 +72,7 @@ else:
 if clear_button:
     st.session_state['generated'] = []
     st.session_state['generatedadv'] = []
+    st.session_state['generatedGraph'] = []
     st.session_state['past'] = []
     st.session_state['messages'] = [
         {"role": "system", "content": "You are a helpful assistant."}
@@ -95,6 +100,10 @@ def generate_response(text):
     history.add_messages("user", f"{result}")
     answer,total_tokens2,prompt_tokens2,completion_tokens2= models.get_result_prompt(text, df_dict, table_schema, result,massages)
     advice = models.Business_advisor(answer,table_schema,text)
+    graph = graphviz.Digraph()
+    graph = models.graph(text,query,df_dict,table_schema,result)
+    print(graph)
+    #final_graph= exec(python_code)
     history.add_messages("assistant", f"{answer}")
 
     response = answer
@@ -105,7 +114,11 @@ def generate_response(text):
     total_tokens = total_tokens1+total_tokens2
     prompt_tokens = prompt_tokens1+prompt_tokens2
     completion_tokens = completion_tokens1+completion_tokens2
-    return response,advice, total_tokens, prompt_tokens, completion_tokens
+
+    #fig = go.Figure(data=df)  # Assuming `graph` has a `data` attribute
+    #st.session_state["generatedGraph"].append(fig)
+    
+    return response,advice,graph, total_tokens, prompt_tokens, completion_tokens
 
 
 # container for chat history
@@ -119,10 +132,11 @@ with container:
         submit_button = st.form_submit_button(label='Send')
 
     if submit_button and user_input:
-        output,advice, total_tokens, prompt_tokens, completion_tokens = generate_response(user_input)
+        output,advice,graph, total_tokens, prompt_tokens, completion_tokens = generate_response(user_input)
         st.session_state['past'].append(user_input)
         st.session_state['generated'].append(output)
         st.session_state['generatedadv'].append(advice)
+        st.session_state['generatedGraph'].append(graph)
         st.session_state['model_name'].append(model_name)
         st.session_state['total_tokens'].append(total_tokens)
 
@@ -141,6 +155,9 @@ if st.session_state['generated']:
             message(st.session_state["past"][i], is_user=True, key=str(i) + '_user')
             message(st.session_state["generated"][i], key=str(i))
             message(st.session_state["generatedadv"][i], key=str(i)+ '_advice')
+            st.graphviz_chart(graph)
+
+
             st.write(
                 f"Model used: {st.session_state['model_name'][i]}; Number of tokens: {st.session_state['total_tokens'][i]}; Cost: ${st.session_state['cost'][i]:.5f}")
             counter_placeholder.write(f"Total cost of this conversation: ${st.session_state['total_cost']:.5f}")
