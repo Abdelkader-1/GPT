@@ -94,6 +94,26 @@ class models:
 
         print(answer)
         return answer
+    def Business_advisor(self,answer,table_schema,question):
+        prompt = """
+                 You are a business consultant
+                 Task: Give a business advice based on answer {}
+                 Context:
+                 Table schema {}
+                 Input question {}
+                    """.format(answer,table_schema,question)
+        request = openai.ChatCompletion.create(
+            engine="gpt-35-turbo",
+            messages=[
+                {"role": "user", "content": prompt},
+            ],
+                    stop=None,
+                    temperature=0.5,
+        
+        )
+        advice = request.choices[0].message.content
+        print(advice)
+        return advice
         
     def graph(self,question,query,df_dict,table_schema,queryResult):
 

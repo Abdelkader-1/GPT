@@ -32,14 +32,15 @@ if __name__ == '__main__':
         history.add_messagesql("user", user_prompt)
         #history.process_user_querysql(text)
         #text = "what is the top 5 products and their amount"
-       
-        result,query = models.executeSQLquery(df_dict, text, table_schema, engine, 5,sqlmessages)
-        history.add_messagesql("assistant", f"{query}")
-        print(query)
-        print(result)
-        history.add_messages("user", f"{result}")
         try:
+            result,query = models.executeSQLquery(df_dict, text, table_schema, engine, 5,sqlmessages)
+            history.add_messagesql("assistant", f"{query}")
+            print(query)
+            print(result)
+            history.add_messages("user", f"{result}")
+        
             answer = models.get_result_prompt(text, df_dict, table_schema, result,massages)
+            models.Business_advisor(answer,table_schema,text)
             out_graph = models.graph(text,query,df_dict,table_schema,result)
         except Exception as e:
             continue
