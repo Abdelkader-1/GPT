@@ -38,8 +38,11 @@ if __name__ == '__main__':
         print(query)
         print(result)
         history.add_messages("user", f"{result}")
-        answer = models.get_result_prompt(text, df_dict, table_schema, result,massages)
-        out_graph = models.graph(text,query,df_dict,table_schema,result)
+        try:
+            answer = models.get_result_prompt(text, df_dict, table_schema, result,massages)
+            out_graph = models.graph(text,query,df_dict,table_schema,result)
+        except Exception as e:
+            continue
         history.add_messages("assistant", f"{answer}")
         # out = model.langChain_sqlModel()
         # Check if 'esc' key is pressed to exit the loop

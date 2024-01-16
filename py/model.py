@@ -106,6 +106,7 @@ class models:
                     Requirements
                     Handle empty results with "No data found."
                     Handle errors with "Try it another way." Example:
+                    just write the code without description
                     import pandas as pd
                     import plotly 
                     # ... (code to generate graph based on context)

@@ -18,7 +18,8 @@ class history:
                                  use the correct columns names
                                  Accurately translate natural language input into SQL query.
                                  Use only function calls and parentheses (no descriptive words).
-                                 Utilize SQLAlchemy supported functions and librarysales.
+                                 Utilize SQLAlchemy supported functions and libraries.
+                                 dont use Limit function
                                  Handle joins as required by user content.""".format(df_dict, table_schema)
                                                         
                                                         }]

@@ -63,7 +63,8 @@ class Auth:
             or TABLE_NAME like 'dim_stores%'
             or TABLE_NAME like 'dimDate%'
             or TABLE_NAME like 'dim_categories%'
-            or TABLE_NAME like 'dim_parent_categories%' 
+            or TABLE_NAME like 'dim_parent_categories%'
+            or TABLE_NAME like 'dim_B2B_Sales_Channel'
         '''
 
 
