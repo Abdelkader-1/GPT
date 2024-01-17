@@ -121,29 +121,32 @@ class models:
         advice = request.choices[0].message.content
         print(advice)
         return advice
-        
-    def graph(self,question,query,df_dict,table_schema,queryResult):
+    global fig
+    def graph(self,question,data):
 
-        prompt = """Task: Generate data frame only.
+        prompt = """Task: Generate a graph for the provided data using plotly.express as px .
                     Context
-                    Table schema {}
-                    Input SQL query {}
-                    Query result {}
                     Input question {}
+                    Data to plot {}
                     Requirements
-                    Handle empty results with "No data found."
-                    Handle errors with "Try it another way." Example:
+                    make a function and return fig, store it in a variable called fig
+                    don't try to display the fig
+                    Handle empty data with None
+                    Handle errors with None 
                     just code with no descriptions
-                    store the data frame in variable called result                    
-                    example
-                    import graphviz as graphviz
-                    graph = graphviz.Digraph()
-                    graph.edge('1','2')
-                    graph.edge('1','3')
-                    graph.edge('3','4')
-                    graph.edge('3','5')
-                    graph.edge('5','6')
-                    """.format(table_schema, query, queryResult, question)
+                    Example:
+                    import plotly.express as px
+                    import pandas as pd
+                    def generate_graph(data):
+                    ---
+                    ---
+                    ---  columns = list(data.columns)
+                    ---  fig = px.bar(data, x=columns[0], y = columns[1]) or any other suitable graph
+                    ---#write the code for Generating a graph here
+                    ---
+                    
+                    return fig
+                    """.format(question,data)
 
 
         request = openai.ChatCompletion.create(
@@ -157,7 +160,11 @@ class models:
         
         python_code = request.choices[0].message.content
         print("python_code: ",python_code)
-        result = exec(python_code)
-        print("result: ",result)
-        return result
+        function_fig = {}
+        exec(python_code,globals())
+        function_fig['generate_graph'] = globals()['generate_graph']
+        # Now you can use the function from the dictionary
+        fig=function_fig['generate_graph'](data)
+        #print("result: ",fig)
+        return fig
     
