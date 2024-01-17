@@ -11,7 +11,7 @@ import plotly.graph_objects as go
 import graphviz as graphviz
 import plotly.express as px
 import pandas as pd
-
+print("hello code")
 os.environ['OPENAI_API_BASE'] = 'https://like-card-test.openai.azure.com/'
 os.environ['OPENAI_API_KEY'] = '85889c7998dd4adb9a4c89abe56b1242'
 auth = Db_authentication.Auth()
@@ -95,16 +95,14 @@ def generate_response(text):
     history.add_messagesql("user", user_prompt)
         #history.process_user_querysql(text)
         #text = "what is the top 5 products and their amount"
+    print("Message history: ",massages,"------------------------------------------------------------------------------------------------------------------------------------------")    
+    print("SQL Message history: ",sqlmessages,"------------------------------------------------------------------------------------------------------------------------------------------")
 
     result,query,total_tokens1,prompt_tokens1,completion_tokens1 = models.executeSQLquery(df_dict, text, table_schema, engine, 5,sqlmessages)
     history.add_messagesql("assistant", f"{query}")
     history.add_messages("user", f"{result}")
     answer,total_tokens2,prompt_tokens2,completion_tokens2= models.get_result_prompt(text, df_dict, table_schema, result,massages)
     advice = models.Business_advisor(answer,table_schema,text)
-    #graph = graphviz.Digraph()
-    #graph = models.graph(text,query,df_dict,table_schema,result)
-    #print(graph)
-    #final_graph= exec(python_code)
     history.add_messages("assistant", f"{answer}")
 
     response = answer
