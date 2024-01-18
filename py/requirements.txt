@@ -1,4 +1,7 @@
 openai
 langchain
 python-dotenv
-keyboard
+pyodbc
+streamlit_chat
+streamlit
+graphviz

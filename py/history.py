@@ -1,8 +1,47 @@
+import Db_authentication
 class history:
-        def __init__(self,massagesql,massages):
+        def __init__(self):
                 #messages to store the conversation
-            self.sqlmessages = []
-            self.massages=[]
+            auth = Db_authentication.Auth()
+            auth.read_credentials()
+            df_dict,table_schema,engine = auth.schema_describtion()
+
+            self.sqlmessages = [{"role":"assistant",
+                                 
+                                 "content":
+                                 """Task
+                                 Generate a concise SQL Server query
+                                 Context
+                                 Available tables, columns and data types {}
+                                 Table schemas {}
+                                 Requirements
+                                 use the correct columns names
+                                 Accurately translate natural language input into SQL query.
+                                 Use only function calls and parentheses (no descriptive words).
+                                 Utilize SQLAlchemy supported functions and libraries.
+                                 dont use Limit function
+                                 Handle joins as required by user content.""".format(df_dict, table_schema)
+                                                        
+                                                        }]
+            
+
+
+            self.massages=[{"role":"assistant",
+                            
+                            "content":
+                            """Task: Answer natural language questions using provided data.
+                            Requirements:
+                            Human-readable, direct answers.
+                            Avoid technical terms.
+                            output in table
+                            Handle empty results with "No data found."
+                            Handle errors with "Try it another way."
+                            Example:
+                            Question: "Total sales January 2023?"
+                            Response: "123,456,789 million dollars."
+                            """
+                            
+            }]
         
         def add_messagesql(self,role, message):
                 

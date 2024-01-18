@@ -1,10 +1,12 @@
 import sqlalchemy as sa
 import pandas as pd
 from langchain.sql_database import SQLDatabase
+import pyodbc
+
 class Auth:
     def __init__(self):
-        self.email = None
-        self.password = None
+        #self.email = None
+        #self.password = None
         self.server = 'anmx3c2yurjethctgyba6xtuaq-vkvbn7t4322edeguc3ufhjtjeu.datawarehouse.pbidedicated.windows.net'
         self.database = 'likeCard'
         self.driver = 'ODBC Driver 18 for SQL Server'
@@ -63,7 +65,8 @@ class Auth:
             or TABLE_NAME like 'dim_stores%'
             or TABLE_NAME like 'dimDate%'
             or TABLE_NAME like 'dim_categories%'
-            or TABLE_NAME like 'dim_parent_categories%' 
+            or TABLE_NAME like 'dim_parent_categories%'
+            or TABLE_NAME like 'dim_B2B_Sales_Channel'
         '''
 
 
