@@ -7,6 +7,8 @@ from langchain.agents import create_sql_agent
 import prompts
 import pandas as pd
 import history
+import streamlit as st
+
 
 class models:
     def __init__(self):
@@ -44,7 +46,7 @@ class models:
                
         request = openai.ChatCompletion.create(
             engine="gpt-35-turbo",
-            messages=sqlmessages,
+            messages= st.session_state['histsqlmassages'],
             stop=None,
         )
         global query
@@ -82,7 +84,7 @@ class models:
         
         request = openai.ChatCompletion.create(
                 engine="gpt-35-turbo",
-                messages=massages,
+                messages= st.session_state['histmassages'],
                 stop=None,
                 temperature=0.7,
                 max_tokens=800,
@@ -106,7 +108,6 @@ class models:
                  You are a business consultant
                  Task: Give a business advice based on answer {}
                  Context:
-                 Table schema {}
                  Input question {}
                     """.format(answer,table_schema,question)
         request = openai.ChatCompletion.create(
@@ -133,7 +134,7 @@ class models:
                     don't try to display the fig
                     Handle empty data with None
                     Handle errors with None 
-                    just code with no descriptions
+                    don't write any descrpition inside the function only code because i will call the function to use it later
                     Example:
                     import plotly.express as px
                     import pandas as pd
@@ -141,10 +142,7 @@ class models:
                     ---
                     ---
                     ---  columns = list(data.columns)
-                    ---  fig = px.bar(data, x=columns[0], y = columns[1]) or any other suitable graph
-                    ---#write the code for Generating a graph here
-                    ---
-                    
+                    ---  fig = px.bar(data, x=columns[0], y = columns[1]) or any other suitable graph                    
                     return fig
                     """.format(question,data)
 

@@ -11,6 +11,7 @@ import plotly.graph_objects as go
 import graphviz as graphviz
 import plotly.express as px
 import pandas as pd
+import numpy as np 
 print("hello code")
 os.environ['OPENAI_API_BASE'] = 'https://like-card-test.openai.azure.com/'
 os.environ['OPENAI_API_KEY'] = '85889c7998dd4adb9a4c89abe56b1242'
@@ -56,6 +57,12 @@ if 'total_tokens' not in st.session_state:
 if 'total_cost' not in st.session_state:
     st.session_state['total_cost'] = 0.0
 
+if 'histmassages' not in st.session_state:
+    st.session_state['histmassages']=massages
+
+if 'histsqlmassages' not in st.session_state:
+    st.session_state['histsqlmassages']=sqlmessages
+
 # Sidebar - let user choose model, show total cost of current conversation, and let user clear the current conversation
 st.sidebar.title("Sidebar")
 model_name = st.sidebar.radio("Choose a model:", ("GPT-3.5", "GPT-4"))
@@ -78,6 +85,10 @@ if clear_button:
     st.session_state['messages'] = [
         {"role": "system", "content": "You are a helpful assistant."}
     ]
+    
+    st.session_state['histmassages'] = []
+    st.session_state['histsqlmassages'] = []
+
     st.session_state['number_tokens'] = []
     st.session_state['model_name'] = []
     st.session_state['cost'] = []
@@ -85,47 +96,37 @@ if clear_button:
     st.session_state['total_tokens'] = []
     counter_placeholder.write(f"Total cost of this conversation: ${st.session_state['total_cost']:.5f}")
 
-
 # generate a response
 def generate_response(text):
-    st.session_state['messages'].append(massages)    
-    #text = input("Enter your question: ")
-    user_prompt=f"{text}"
-    history.add_messages("user", user_prompt)
-    history.add_messagesql("user", user_prompt)
-        #history.process_user_querysql(text)
-        #text = "what is the top 5 products and their amount"
+
+    st.session_state['histsqlmassages'].append({"role": "user", "content": f"{text}"})   
     print("Message history: ",massages,"------------------------------------------------------------------------------------------------------------------------------------------")    
     print("SQL Message history: ",sqlmessages,"------------------------------------------------------------------------------------------------------------------------------------------")
 
     result,query,total_tokens1,prompt_tokens1,completion_tokens1 = models.executeSQLquery(df_dict, text, table_schema, engine, 5,sqlmessages)
-    history.add_messagesql("assistant", f"{query}")
-    history.add_messages("user", f"{result}")
+    st.session_state['histsqlmassages'].append({"role": "assistant", "content":  f"{query}"})
+    st.session_state['histmassages'].append({"role": "user", "content":  f"{result}"})
+
     answer,total_tokens2,prompt_tokens2,completion_tokens2= models.get_result_prompt(text, df_dict, table_schema, result,massages)
     advice = models.Business_advisor(answer,table_schema,text)
     history.add_messages("assistant", f"{answer}")
 
     response = answer
-    st.session_state['messages'].append({"role": "assistant", "content": response})
-    st.session_state['messages'].append({"role": "assistant", "content": advice})
-
-    # print(st.session_state['messages'])
+    st.session_state['histsqlmassages'].append({"role": "assistant", "content": f"{response}"})   
     total_tokens = total_tokens1+total_tokens2
     prompt_tokens = prompt_tokens1+prompt_tokens2
     completion_tokens = completion_tokens1+completion_tokens2
     columns = pd.DataFrame(result).columns
     fig = models.graph(text,result)
-    #fig = px.bar(result, x=columns[0], y = columns[1])
-    #fig = go.Figure(data=df)  # Assuming `graph` has a `data` attribute
-    #st.session_state["generatedGraph"].append(fig)
-    
+
     return response,advice,fig, total_tokens, prompt_tokens, completion_tokens
 
 
-# container for chat history
 response_container = st.container()
+
 # container for text box
 container = st.container()
+containergraph = st.container()
 
 with container:
     with st.form(key='my_form', clear_on_submit=True):
@@ -150,14 +151,21 @@ with container:
         st.session_state['cost'].append(cost)
         st.session_state['total_cost'] += cost
 
+
+
+
 if st.session_state['generated']:
     with response_container:
         for i in range(len(st.session_state['generated'])):
             message(st.session_state["past"][i], is_user=True, key=str(i) + '_user')
             message(st.session_state["generated"][i], key=str(i))
             message(st.session_state["generatedadv"][i], key=str(i)+ '_advice')
-            st.plotly_chart(fig)
-
+            
+            with st.form(key=str(i)+ '_graph', clear_on_submit=True):
+                submit_graph = st.form_submit_button(label='add graph')
+            if submit_graph:
+                st.plotly_chart(st.session_state["generatedGraph"][i])
+            #st.plotly_chart(st.session_state["generatedGraph"][i])
             st.write(
                 f"Model used: {st.session_state['model_name'][i]}; Number of tokens: {st.session_state['total_tokens'][i]}; Cost: ${st.session_state['cost'][i]:.5f}")
             counter_placeholder.write(f"Total cost of this conversation: ${st.session_state['total_cost']:.5f}")

@@ -29,18 +29,15 @@ class history:
             self.massages=[{"role":"assistant",
                             
                             "content":
-                            """Task: Answer natural language questions using provided data.
+                            """Task: modify and answer in natural language questions using provided data.
                             Requirements:
                             Human-readable, direct answers.
                             Avoid technical terms.
-                            output in table
+                            make the numbers in , like 123,456,789 million 
+                            *make the output in table*
                             Handle empty results with "No data found."
                             Handle errors with "Try it another way."
-                            Example:
-                            Question: "Total sales January 2023?"
-                            Response: "123,456,789 million dollars."
-                            """
-                            
+                            """  
             }]
         
         def add_messagesql(self,role, message):
