@@ -6,11 +6,8 @@ import os
 import Db_authentication
 import model
 import history
-import pyodbc
 import graphviz as graphviz
-import plotly.express as px
 import pandas as pd
-import numpy as np 
 print("hello code")
 os.environ['OPENAI_API_BASE'] = 'https://like-card-test.openai.azure.com/'
 os.environ['OPENAI_API_KEY'] = '85889c7998dd4adb9a4c89abe56b1242'
