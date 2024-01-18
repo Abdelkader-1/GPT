@@ -7,7 +7,6 @@ import Db_authentication
 import model
 import history
 import pyodbc
-import plotly.graph_objects as go  
 import graphviz as graphviz
 import plotly.express as px
 import pandas as pd
