@@ -19,7 +19,6 @@ class Auth:
             lines = f.readlines()
         self.email = lines[0].strip()  # Assign first line to email
         self.password = lines[1].strip()  # Assign second line to password
-        return self.email,self.password
 
 
 
@@ -41,12 +40,13 @@ class Auth:
         """Connects to the SQL database using read credentials."""
 
         # Encode @ symbols for compatibility
-        user,password = self.read_credentials()
-        #password = self.password.replace("@", "%40")
+        user = self.email.replace("@", "%40")
+        password = self.password.replace("@", "%40")
         #db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=no&Authentication=ActiveDirectoryInteractive'
-        db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=no'
+        db_string = f'mssql+pyodbc://{self.user}:{self.password}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=no'
 
-        engine = sa.create_engine(db_string, echo=True)
+        engine = sa.create_engine(db_string, echo=True, connect_args={'autocommit': True}, fast_executemany=True)
+
 
 
         return engine
