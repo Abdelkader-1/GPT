@@ -42,7 +42,7 @@ class Auth:
         # Encode @ symbols for compatibility
         user = self.email.replace("@", "%40")
         password = self.password.replace("@", "%40")
-        db_string = f'mssql+pyodbc://{user}:{"a2ff52c3-236b-4ef4-9f31-e5bf5fd41a97"}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=no&Authentication=ActiveDirectoryInteractive'
+        db_string = f'mssql+pyodbc://{"1f7f6ccf-14dd-45ed-81a5-59cea1548ff3"}:{"a2ff52c3-236b-4ef4-9f31-e5bf5fd41a97"}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=no&Authentication=ActiveDirectoryInteractive'
         #db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=no'
         engine = sa.create_engine(db_string, echo=True, connect_args={'autocommit': True}, fast_executemany=True,pool_pre_ping=True)
         return engine
