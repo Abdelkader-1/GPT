@@ -43,20 +43,12 @@ class Auth:
         # Encode @ symbols for compatibility
         user = self.email.replace("@", "%40")
         password = self.password.replace("@", "%40")
-        client_id = "1f7f6ccf-14dd-45ed-81a5-59cea1548ff3"
-        client_secret = "a2ff52c3-236b-4ef4-9f31-e5bf5fd41a97"
-        #tenant_id = "97287211-ae1d-4e14-8f98-aee9316f13f1"
-        #db_string = f'mssql+pyodbc://{user}:{"a2ff52c3-236b-4ef4-9f31-e5bf5fd41a97"}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=no&Authentication=ActiveDirectoryInteractive'
+        db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=no&Authentication=ActiveDirectoryInteractive'
         #db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=no'
-        db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}'
-        db_string += f'&Authentication=ActiveDirectoryInteractive'
-        db_string += f'&UID={urllib.parse.quote_plus(client_id)}'
-        db_string += f'&PWD={urllib.parse.quote_plus(client_secret)}'
-        db_string += f'&Encrypt=yes&TrustServerCertificate=no&Connection Timeout=300'
-        db_string += f'&ServerSPN={self.server}'
+
                 
         
-        
+        print("connection string: ", db_string)
         
         
         engine = sa.create_engine(db_string, echo=True, connect_args={'autocommit': True}, fast_executemany=True,pool_pre_ping=True)
