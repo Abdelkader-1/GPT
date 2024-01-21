@@ -1,12 +1,12 @@
 from langchain_community.llms import AzureOpenAI
 #from langchain.llms import openai
 import openai
-from langchain.memory import ConversationBufferMemory
-from langchain.agents.agent_toolkits import SQLDatabaseToolkit
-from langchain.agents import create_sql_agent
-import prompts
+#from langchain.memory import ConversationBufferMemory
+#from langchain.agents.agent_toolkits import SQLDatabaseToolkit
+#from langchain.agents import create_sql_agent
+#import prompts
 import pandas as pd
-import history
+#import history
 import streamlit as st
 
 
@@ -14,6 +14,7 @@ class models:
     def __init__(self):
         self.dp = None
         self.question = None
+    '''
     def langChain_sqlModel(self):    
         #make an instance of the model
         model = AzureOpenAI( model_name="gpt-35-turbo-instruct",deployment_name="gpt-35-turbo-instruct",temperature=0)
@@ -39,7 +40,7 @@ class models:
         
         
         return agent_executor.invoke(self.question)
-
+        '''
 
     query = None
     def generate_sql_query(self,dictionary, table_schema, text,sqlmessages):
