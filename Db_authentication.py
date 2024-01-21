@@ -1,6 +1,5 @@
 import sqlalchemy as sa
 import pandas as pd
-from langchain.sql_database import SQLDatabase
 import pyodbc
 import urllib.parse
 
@@ -23,20 +22,7 @@ class Auth:
 
 
 
-    def LangChain_connect_to_database(self):
-        """Connects to the SQL database using read credentials."""
-
-
-        # Encode @ symbols for compatibility
-        user = self.email.replace("@", "%40")
-        password = self.password.replace("@", "%40")
-
-        db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=no&Authentication=ActiveDirectoryInteractive'
-        #db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=yes'
-
-        db=SQLDatabase.from_uri(db_string)
-
-        return db  # Return the database connection object
+    
     def engine_connect_to_database(self):
         """Connects to the SQL database using read credentials."""
 

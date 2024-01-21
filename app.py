@@ -6,7 +6,6 @@ import os
 import Db_authentication
 import model
 import history
-import graphviz as graphviz
 import pandas as pd
 print("hello code")
 os.environ['OPENAI_API_BASE'] = 'https://like-card-test.openai.azure.com/'
