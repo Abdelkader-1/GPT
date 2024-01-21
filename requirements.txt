@@ -1,7 +1,9 @@
 openai==0.28
+langchain
 python-dotenv
 pyodbc
 streamlit_chat
 streamlit
+graphviz
 pandas
 numpy
