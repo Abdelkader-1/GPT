@@ -4,6 +4,8 @@ import pandas as pd
 import pyodbc
 import urllib.parse
 
+
+
 class Auth:
     def __init__(self):
         #self.email = None

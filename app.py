@@ -8,6 +8,15 @@ import model
 import history
 import graphviz as graphviz
 import pandas as pd
+
+import subprocess
+
+# Path to your MSI file
+msi_path = "msodbcsql.msi"
+
+# Install the MSI file using msiexec command
+subprocess.run( ["msiexec", "/i",msi_path, "/qn","/norestart" ])
+                
 print("hello code")
 os.environ['OPENAI_API_BASE'] = 'https://like-card-test.openai.azure.com/'
 os.environ['OPENAI_API_KEY'] = '85889c7998dd4adb9a4c89abe56b1242'
