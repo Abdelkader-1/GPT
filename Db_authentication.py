@@ -39,6 +39,8 @@ class Auth:
         db=SQLDatabase.from_uri(db_string)
 
         return db  # Return the database connection object
+
+        import streamlit as st
         '''
     def engine_connect_to_database(self):
         """Connects to the SQL database using read credentials."""
@@ -48,13 +50,15 @@ class Auth:
         password = self.password.replace("@", "%40")
         #db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Integrated+Security=true'
         #db_string = f'mssql+pyodbc://{self.server}/{self.database}?driver={self.driver}&Integrated+Security=true'
-        db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=no&Authentication=Kerberos'
+        #db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=no&Authentication=ActiveDirectoryPassword'
         #db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}'
 
-        #db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=no'
+        db_string = f'Driver={self.driver};Server={self.server};Database={self.database};Uid={user};Pwd={password};Encrypt=Yes;TrustServerCertificate=No;Authentication=ActiveDirectoryPassword;'
+        
 
         '''
-        conn = pymssql.connect(
+        conn = pymssql.connect( Driver={driver};Server={server};Database={database};Uid={username};Pwd={password};Encrypt=Yes;TrustServerCertificate=No;Authentication={auth};'
+_cnxn = pyodbc.connect(con_str)
                                 server=self.server,
                                 user=user,
                                 password=password,
