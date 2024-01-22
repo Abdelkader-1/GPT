@@ -1,2 +1,2 @@
 
-sudo apt-get -q -y install msodbcsql18
+sudo  -q -y  msodbcsql18
