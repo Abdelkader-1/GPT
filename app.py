@@ -12,26 +12,13 @@ import pandas as pd
 import subprocess
 
 # Path to your MSI file
-msi_path = "msodbcsql.msi"
-
-# Install the MSI file using msiexec command
-if os.name == 'nt':
-    # Install the MSI file using msiexec command
-    subprocess.run(["msiexec", "/i", msi_path, "/qn", "/norestart"])
-else:
-    st.warning("MSI installation is only supported on Windows.")     
+   
 
 
 print("hello code")
 os.environ['OPENAI_API_BASE'] = 'https://like-card-test.openai.azure.com/'
 os.environ['OPENAI_API_KEY'] = '85889c7998dd4adb9a4c89abe56b1242'
-auth = Db_authentication.Auth()
-auth.read_credentials()
-models = model.models()
-history=history.history()
-massages=history.massages
-sqlmessages=history.sqlmessages
-df_dict,table_schema,engine = auth.schema_describtion()
+
 st.set_page_config(page_title="Custom ChatGPT")
 
 st.markdown("<h1 style='text-align: center;'>Your ABI Assistant 😬</h1>", unsafe_allow_html=True)
@@ -41,7 +28,13 @@ openai.api_type = "azure"
 openai.api_version = "2023-03-15-preview"
 openai.api_base = os.getenv('OPENAI_API_BASE')
 openai.api_key = os.getenv("OPENAI_API_KEY")
-
+auth = Db_authentication.Auth()
+auth.read_credentials()
+models = model.models()
+history=history.history()
+massages=history.massages
+sqlmessages=history.sqlmessages
+df_dict,table_schema,engine = auth.schema_describtion()
 # Initialise session state variables
 if 'generated' not in st.session_state:
     st.session_state['generated'] = []

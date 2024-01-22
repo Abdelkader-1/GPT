@@ -3,7 +3,8 @@ import pandas as pd
 #from langchain.sql_database import SQLDatabase
 import pyodbc
 import urllib.parse
-
+import pymssql
+from urllib.parse import quote_plus
 
 
 class Auth:
@@ -22,7 +23,6 @@ class Auth:
             lines = f.readlines()
         self.email = lines[0].strip()  # Assign first line to email
         self.password = lines[1].strip()  # Assign second line to password
-
 
 
     '''   
@@ -47,16 +47,24 @@ class Auth:
         # Encode @ symbols for compatibility
         user = self.email.replace("@", "%40")
         password = self.password.replace("@", "%40")
+        #db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Integrated+Security=true'
+        #db_string = f'mssql+pyodbc://{self.server}/{self.database}?driver={self.driver}&Integrated+Security=true'
         db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=no&Authentication=ActiveDirectoryInteractive'
+        #db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}'
+
         #db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=no'
 
-                
-        
-        print("connection string: ", db_string)
-        
-        
-        engine = sa.create_engine(db_string, echo=True, connect_args={'autocommit': True}, fast_executemany=True,pool_pre_ping=True)
-        return engine
+        '''
+        conn = pymssql.connect(
+                                server=self.server,
+                                user=user,
+                                password=password,
+                                database=self.database,
+                                as_dict=True
+                            )
+            '''
+        #engine = sa.create_engine(db_string, echo=True, connect_args={'autocommit': True}, fast_executemany=True,pool_pre_ping=True)
+        return db_string
     def schema_describtion(self):
         sql_query = '''
         SELECT 
