@@ -2,6 +2,7 @@ import sqlalchemy as sa
 import pandas as pd
 #from langchain.sql_database import SQLDatabase
 import pyodbc
+import streamlit as st
 
 #from urllib.parse import quote_plus
 
@@ -50,22 +51,14 @@ class Auth:
         password = self.password.replace("@", "%40")
         #db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Integrated+Security=true'
         #db_string = f'mssql+pyodbc://{self.server}/{self.database}?driver={self.driver}&Integrated+Security=true'
-        #db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=no&Authentication=ActiveDirectoryPassword'
+        db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=no&Authentication=ActiveDirectoryInteractive'
         #db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}'
+        #conn_str = f'DRIVER={{ODBC Driver 18 for SQL Server}};SERVER={self.server};DATABASE={self.database};UID={user};PWD={password}'
 
-        db_string = f'Driver={self.driver};Server={self.server};Database={self.database};Uid={user};Pwd={password};Encrypt=Yes;TrustServerCertificate=No;Authentication=ActiveDirectoryPassword;'
+        #conn = pyodbc.connect(conn_str)
+
+        #db_string = f'Driver={self.driver};Server={self.server};Database={self.database};Uid={user};Pwd={password};TrustServerCertificate=no&Authentication=ActiveDirectoryPassword;'
         
-
-        '''
-        conn = pymssql.connect( Driver={driver};Server={server};Database={database};Uid={username};Pwd={password};Encrypt=Yes;TrustServerCertificate=No;Authentication={auth};'
-_cnxn = pyodbc.connect(con_str)
-                                server=self.server,
-                                user=user,
-                                password=password,
-                                database=self.database,
-                                as_dict=True
-                            )
-            '''
         #engine = sa.create_engine(db_string, echo=True, connect_args={'autocommit': True}, fast_executemany=True,pool_pre_ping=True)
         return db_string
     def schema_describtion(self):
