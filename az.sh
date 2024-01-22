@@ -1,1 +1,1 @@
-export LD_LIBRARY_PATH=/GPT\/to/odbc/driver:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/"ODBC Data Sources (64-bit).lnk":$LD_LIBRARY_PATH

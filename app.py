@@ -12,7 +12,8 @@ import pandas as pd
 import subprocess
 
 # Path to your MSI file
-   
+subprocess.run(['.', 'az.sh'], shell=True)
+
 
 
 print("hello code")
