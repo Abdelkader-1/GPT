@@ -1,2 +1,2 @@
 
-sudo  -q -y  msodbcsql18
+sudo -q msodbcsql18 -y 
