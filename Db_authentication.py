@@ -1,10 +1,9 @@
-import sqlalchemy as sa
+#import sqlalchemy as sa
 import pandas as pd
 #from langchain.sql_database import SQLDatabase
-import pyodbc
-import urllib.parse
-import pymssql
-from urllib.parse import quote_plus
+#import pyodbc
+
+#from urllib.parse import quote_plus
 
 
 class Auth:
