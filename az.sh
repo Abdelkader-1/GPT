@@ -1,1 +1,0 @@
-export LD_LIBRARY_PATH=/"ODBC Data Sources (64-bit).lnk":$LD_LIBRARY_PATH
