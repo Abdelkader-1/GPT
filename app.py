@@ -9,6 +9,7 @@ import history
 import graphviz as graphviz
 import pandas as pd
 
+package_manager_command = "apt-get install -y msodbcsql18"
 
 
 print("hello code")
