@@ -33,7 +33,7 @@ class Auth:
         user = self.email.replace("@", "%40")
         password = self.password.replace("@", "%40")
 
-        db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=no&Authentication=ActiveDirectoryInteractive'
+        db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=no&Authentication=Kerberos'
         #db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=yes'
 
         db=SQLDatabase.from_uri(db_string)
@@ -48,7 +48,7 @@ class Auth:
         password = self.password.replace("@", "%40")
         #db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Integrated+Security=true'
         #db_string = f'mssql+pyodbc://{self.server}/{self.database}?driver={self.driver}&Integrated+Security=true'
-        db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=no&Authentication=ActiveDirectoryInteractive'
+        db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=no&Authentication=Kerberos'
         #db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}'
 
         #db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=no'

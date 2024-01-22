@@ -9,9 +9,7 @@ import history
 import graphviz as graphviz
 import pandas as pd
 
-package_manager_command = "apt-get install -y msodbcsql18"
-accept_eula_command = "export ACCEPT_EULA=Y"
-os.system(f"{accept_eula_command} && {package_manager_command}")
+
 
 print("hello code")
 os.environ['OPENAI_API_BASE'] = 'https://like-card-test.openai.azure.com/'
