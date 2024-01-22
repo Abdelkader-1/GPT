@@ -1,2 +1,1 @@
-unixODBC
-msodbcsql17
+msodbcsql18
