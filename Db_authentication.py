@@ -12,7 +12,7 @@ class Auth:
         #self.password = None
         self.server = 'anmx3c2yurjethctgyba6xtuaq-vkvbn7t4322edeguc3ufhjtjeu.datawarehouse.pbidedicated.windows.net'
         self.database = 'likeCard'
-        self.driver = 'ODBC Driver 17 for SQL Server'
+        self.driver = 'ODBC Driver 18 for SQL Server'
 
     
 
