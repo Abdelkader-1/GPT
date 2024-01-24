@@ -67,7 +67,7 @@ class Auth:
 
         #db_string = f'Driver={self.driver};Server={self.server};Database={self.database};Uid={user};Pwd={password};TrustServerCertificate=no&Authentication=ActiveDirectoryPassword;'
         
-        #engine = sa.create_engine(db_string, echo=True, connect_args={'autocommit': True}, fast_executemany=True,pool_pre_ping=True)
+        engine = sa.create_engine(db_string, echo=True, connect_args={'autocommit': True}, fast_executemany=True,pool_pre_ping=True)
         return db_string
     def schema_describtion(self):
         sql_query = '''

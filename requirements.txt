@@ -1,5 +1,6 @@
 openai==0.28
 langchain
+plotly
 python-dotenv
 pyodbc
 streamlit_chat

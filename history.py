@@ -18,9 +18,17 @@ class history:
                                  use the correct columns names
                                  Accurately translate natural language input into SQL query.
                                  Use only function calls and parentheses (no descriptive words).
-                                 Utilize SQLAlchemy supported functions and libraries.
+                                 example:dont write the query like that 
+                                 ```sql
+                                SELECT SUM(amount) AS total_amount
+                                FROM dbo.transactions
+                                ```
+                                but this
+                                SELECT SUM(amount) AS total_amount
+                                FROM dbo.transactions
+                                 Utilize Azure SQL server supported functions and libraries.
                                  dont use Limit function
-                                 Handle joins as required by user content.""".format(df_dict, table_schema)
+                                 Handle joins as required by user content if needed.""".format(df_dict, table_schema)
                                                         
                                                         }]
             

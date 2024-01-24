@@ -57,6 +57,9 @@ class models:
         total_tokens = request.usage.total_tokens
         prompt_tokens = request.usage.prompt_tokens
         completion_tokens = request.usage.completion_tokens
+        print("from generate sql query")
+
+        print(query)
         return query,total_tokens,prompt_tokens,completion_tokens
 
 
