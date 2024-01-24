@@ -19,7 +19,7 @@ class Auth:
         self.user1="CloudSA42bee827"
         self.pass1="XP2U@X3R5EOQ23"
         self.database="like"
-        self.driver="ODBC Driver 18 for SQL Server"
+        self.driver="ODBC Driver 17 for SQL Server"
 
 
     
