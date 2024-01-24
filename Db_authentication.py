@@ -3,7 +3,7 @@ import pandas as pd
 #from langchain.sql_database import SQLDatabase
 import pyodbc
 import streamlit as st
-
+import urllib
 #from urllib.parse import quote_plus
 
 
@@ -11,9 +11,16 @@ class Auth:
     def __init__(self):
         #self.email = None
         #self.password = None
-        self.server = 'anmx3c2yurjethctgyba6xtuaq-vkvbn7t4322edeguc3ufhjtjeu.datawarehouse.pbidedicated.windows.net'
-        self.database = 'likeCard'
-        self.driver = 'ODBC Driver 17 for SQL Server'
+        #self.server = 'anmx3c2yurjethctgyba6xtuaq-vkvbn7t4322edeguc3ufhjtjeu.datawarehouse.pbidedicated.windows.net'
+        #self.database = 'likeCard'
+        #self.driver = 'ODBC Driver 17 for SQL Server'
+        
+        self.server = 'like4.database.windows.net'
+        self.user1="CloudSA42bee827"
+        self.pass1="XP2U@X3R5EOQ23"
+        self.database="like"
+        self.driver="ODBC Driver 18 for SQL Server"
+
 
     
 
@@ -47,14 +54,15 @@ class Auth:
         """Connects to the SQL database using read credentials."""
 
         # Encode @ symbols for compatibility
-        user = self.email.replace("@", "%40")
-        password = self.password.replace("@", "%40")
+        user = self.email#.replace("@", "%40")
+        password = self.password#.replace("@", "%40")
         #db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Integrated+Security=true'
         #db_string = f'mssql+pyodbc://{self.server}/{self.database}?driver={self.driver}&Integrated+Security=true'
-        db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=no&Authentication=ActiveDirectoryInteractive'
+        #db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=no&Authentication=ActiveDirectoryInteractive'
         #db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}'
         #conn_str = f'DRIVER={{ODBC Driver 18 for SQL Server}};SERVER={self.server};DATABASE={self.database};UID={user};PWD={password}'
-
+        odbc_str = 'DRIVER='+self.driver+';SERVER='+self.server+';PORT=1433;UID='+self.user1+';DATABASE='+ self.database + ';PWD='+ self.pass1
+        db_string = 'mssql+pyodbc:///?odbc_connect=' + urllib.parse.quote_plus(odbc_str)
         #conn = pyodbc.connect(conn_str)
 
         #db_string = f'Driver={self.driver};Server={self.server};Database={self.database};Uid={user};Pwd={password};TrustServerCertificate=no&Authentication=ActiveDirectoryPassword;'
@@ -72,14 +80,7 @@ class Auth:
             INFORMATION_SCHEMA.COLUMNS
         WHERE 
             TABLE_NAME IN (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE')
-            and TABLE_NAME like 'dim_products' 
-            or TABLE_NAME like 'fact_transactions%' 
-            or TABLE_NAME like 'dim_allusers%'
-            or TABLE_NAME like 'dim_stores%'
-            or TABLE_NAME like 'dimDate%'
-            or TABLE_NAME like 'dim_categories%'
-            or TABLE_NAME like 'dim_parent_categories%'
-            or TABLE_NAME like 'dim_B2B_Sales_Channel'
+            and TABLE_NAME like 'transactions'
         '''
 
 
