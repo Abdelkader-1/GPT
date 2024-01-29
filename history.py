@@ -2,7 +2,7 @@ import Db_authentication
 class history:
         def __init__(self):
                 #messages to store the conversation
-            auth = Db_authentication.Auth()
+            auth = Db_authentication.Auth('CloudSA42bee827','XP2U@X3R5EOQ23','like4.database.windows.net','like')
             auth.read_credentials()
             df_dict,table_schema,engine = auth.schema_describtion()
 
@@ -17,7 +17,7 @@ class history:
                                  Requirements
                                  use the correct columns names
                                  Accurately translate natural language input into SQL query.
-                                 Use only function calls and parentheses (no descriptive words).
+                                 Use only function calls and parentheses (no descriptive words) and consider  that the time are unixtimestamp
                                  example:dont write the query like that 
                                  ```sql
                                 SELECT SUM(amount) AS total_amount

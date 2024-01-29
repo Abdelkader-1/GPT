@@ -8,17 +8,18 @@ import urllib
 
 
 class Auth:
-    def __init__(self):
+    def __init__(self,user,password,server,database):
         #self.email = None
         #self.password = None
         #self.server = 'anmx3c2yurjethctgyba6xtuaq-vkvbn7t4322edeguc3ufhjtjeu.datawarehouse.pbidedicated.windows.net'
         #self.database = 'likeCard'
         #self.driver = 'ODBC Driver 17 for SQL Server'
         
-        self.server = 'like4.database.windows.net'
-        self.user1="CloudSA42bee827"
-        self.pass1="XP2U@X3R5EOQ23"
-        self.database="like"
+        self.server = server #'like4.database.windows.net'
+        self.user1=user #"CloudSA42bee827"
+        self.pass1=password#"XP2U@X3R5EOQ23"
+        self.database=database#"like"
+        
         self.driver="ODBC Driver 17 for SQL Server"
 
 
@@ -54,8 +55,8 @@ class Auth:
         """Connects to the SQL database using read credentials."""
 
         # Encode @ symbols for compatibility
-        user = self.email#.replace("@", "%40")
-        password = self.password#.replace("@", "%40")
+        #user = self.email#.replace("@", "%40")
+        #password = self.password#.replace("@", "%40")
         #db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Integrated+Security=true'
         #db_string = f'mssql+pyodbc://{self.server}/{self.database}?driver={self.driver}&Integrated+Security=true'
         #db_string = f'mssql+pyodbc://{user}:{password}@{self.server}/{self.database}?driver={self.driver}&Trusted_Connection=no&Authentication=ActiveDirectoryInteractive'
