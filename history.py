@@ -2,7 +2,7 @@ import Db_authentication
 class history:
         def __init__(self):
                 #messages to store the conversation
-            auth = Db_authentication.Auth('CloudSA42bee827','XP2U@X3R5EOQ23','like4.database.windows.net','like')
+            auth = Db_authentication.Auth()
             auth.read_credentials()
             df_dict,table_schema,engine = auth.schema_describtion()
 
@@ -15,6 +15,7 @@ class history:
                                  Available tables, columns and data types {}
                                  Table schemas {}
                                  Requirements
+                                 deal with unix timestamp columns by converting them to datetime 
                                  use the correct columns names
                                  Accurately translate natural language input into SQL query.
                                  Use only function calls and parentheses (no descriptive words) and consider  that the time are unixtimestamp

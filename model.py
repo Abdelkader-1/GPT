@@ -1,46 +1,12 @@
 from langchain_community.llms import AzureOpenAI
-#from langchain.llms import openai
 import openai
-#from langchain.memory import ConversationBufferMemory
-#from langchain.agents.agent_toolkits import SQLDatabaseToolkit
-#from langchain.agents import create_sql_agent
-#import prompts
 import pandas as pd
-#import history
 import streamlit as st
-
 
 class models:
     def __init__(self):
         self.dp = None
         self.question = None
-    '''
-    def langChain_sqlModel(self):    
-        #make an instance of the model
-        model = AzureOpenAI( model_name="gpt-35-turbo-instruct",deployment_name="gpt-35-turbo-instruct",temperature=0)
-
-        #create the prompt
-        p = prompts.promptFactory()
-        prompt = p.defultprompt()
-
-        #intialize the agent
-        agent_executor = create_sql_agent(
-            model,
-            toolkit=SQLDatabaseToolkit(db=self.dp, llm=model),
-            #add memory _|_
-              agent_executor_kwargs={
-                 "memory": ConversationBufferMemory(
-                     input_key="question", memory_key="history", return_messages=True
-                 )
-             },
-             suffix=prompt,
-             input_variables=["question", "history","agent_scratchpad"],
-            verbose=True
-        )
-        
-        
-        return agent_executor.invoke(self.question)
-        '''
 
     query = None
     def generate_sql_query(self,dictionary, table_schema, text,sqlmessages):
@@ -90,7 +56,7 @@ class models:
                 engine="gpt-35-turbo",
                 messages= st.session_state['histmassages'],
                 stop=None,
-                temperature=0.7,
+                temperature=0,
                 max_tokens=800,
                 top_p=0.95,
                 frequency_penalty=0,
@@ -143,8 +109,6 @@ class models:
                     import plotly.express as px
                     import pandas as pd
                     def generate_graph(data):
-                    ---
-                    ---
                     ---  columns = list(data.columns)
                     ---  fig = px.bar(data, x=columns[0], y = columns[1]) or any other suitable graph                    
                     return fig
